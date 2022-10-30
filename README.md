@@ -1,6 +1,6 @@
 # GCP-Project
 
-Deploy a python web application on GKE. if u need to know about app you can go and read this readme file https://github.com/atefhares/DevOps-Challenge-Demo-Code
+Deploy a python web application on GKE. if you need to know more about app you can go and read this readme file https://github.com/atefhares/DevOps-Challenge-Demo-Code in short its python app depend on redis
 
 ## 1. we need to build our image using docker and push it to GCR
 
@@ -43,3 +43,4 @@ helm install <appname> .
 ```
 kubectl get service -o wide
 ```
+![Screenshot from 2022-10-30 23-12-35](https://user-images.githubusercontent.com/52250018/198902038-0fdb4f3a-a2c8-460a-8da7-f847ef8532d5.png)
