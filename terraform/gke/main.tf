@@ -1,12 +1,15 @@
+
+
+
 resource "google_container_cluster" "primary" {
-  name                     = "primary"
-  location                 = "us-central1-a"
+  name                     = var.cluster_name
+  location                 = var.cluster_location
   remove_default_node_pool = true
   initial_node_count       = 1
-  network                  = google_compute_network.main.self_link
-  subnetwork               = google_compute_subnetwork.private.self_link
+  network                  = var.network_name
+  subnetwork               = var.subnet_name
   logging_service          = "logging.googleapis.com/kubernetes"
-  monitoring_service       = "monitoring.googleapis.com/kubernetes"
+  monitoring_service       = "monitoring.googleapis.com/kubernetes" 
 
   addons_config {
     http_load_balancing {
@@ -28,7 +31,7 @@ resource "google_container_cluster" "primary" {
 
     master_authorized_networks_config {
         cidr_blocks {
-          cidr_block = "10.2.0.0/16"
+          cidr_block = var.authorized_ipv4_cidr_block
         } 
     }
   private_cluster_config {

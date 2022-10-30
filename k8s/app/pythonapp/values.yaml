@@ -24,10 +24,10 @@ deploy:
 
 configMap:
   data:
-      ENVIRONMENT: 'DEV'
-      HOST: '10.52.0.200'
-      PORT: '8000'
-      REDIS_HOST: '10.52.3.57'
+      ENVIRONMENT: DEV
+      HOST: localhost
+      PORT: "8000"
+      REDIS_HOST: localhost
       REDIS_PORT: "6379"
       REDIS_DB: "0"
 
@@ -39,6 +39,3 @@ Service:
       port: 8000
       targetPort: 8000
       protocol: TCP
-      
-      
-      

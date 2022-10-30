@@ -1,3 +1,8 @@
+resource "google_project_service" "compute" {
+      disable_on_destroy = true 
+      project            = "mostafa-ashour-project"
+      service            = "compute.googleapis.com" 
+    }
 resource "google_service_account" "vms" {
   account_id   = "serviceaccountidforvms2"
   display_name = "Service Account"
@@ -12,15 +17,15 @@ resource "google_project_iam_binding" "admin-account-iam" {
   ]
 }
 
-# resource "google_compute_address" "address" {
-#   name   = "address"
-#   region = google_compute_subnetwork.management-subnetwork.region
-# }
+resource "google_compute_address" "address" {
+  name   = "address"
+  region = var.region
+}
 
 resource "google_compute_instance" "bastion" {
-  name         = "bastion"
+  name         = var.bastion_name
   machine_type = "e2-medium"
-  zone         = "us-west1-b"
+  zone         = var.zone
 
   boot_disk {
     initialize_params {
@@ -29,8 +34,8 @@ resource "google_compute_instance" "bastion" {
   }
 
   network_interface {
-    network = "main"
-    subnetwork = google_compute_subnetwork.management-subnetwork.name
+    network = var.network_name
+    subnetwork = var.subnet_name
 
     # access_config {
     #     nat_ip = "${google_compute_address.address.address}"

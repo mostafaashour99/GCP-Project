@@ -2,9 +2,17 @@ resource "google_service_account" "kubernetes" {
   account_id = "kubernetes"
 }
 
+resource "google_project_iam_binding" "admin-account-iam" {
+  project = "mostafa-ashour-project"
+  role    = "roles/storage.objectViewer"
+
+  members = [
+    "serviceAccount:${google_service_account.kubernetes.email}",
+  ]
+}
 resource "google_container_node_pool" "general" {
   name       = "general"
-  cluster    = google_container_cluster.primary.id
+  cluster    = google_container_cluster.primary.name
   node_count = 1
   location       = google_container_cluster.primary.location
 
@@ -43,37 +51,29 @@ resource "google_container_node_pool" "general" {
   }
 }
 
-# resource "google_container_node_pool" "spot" {
-#   name    = "spot"
-#   cluster = google_container_cluster.primary.id
+resource "google_container_node_pool" "spot" {
+  name    = "spot"
+  cluster = google_container_cluster.primary.id
 
-#   management {
-#     auto_repair  = true
-#     auto_upgrade = true
-#   }
+  management {
+    auto_repair  = true
+    auto_upgrade = true
+  }
 
-#   autoscaling {
-#     min_node_count = 0
-#     max_node_count = 10
-#   }
+  autoscaling {
+    min_node_count = 0
+    max_node_count = 10
+  }
 
-#   node_config {
-#     preemptible  = true
-#     machine_type = "e2-small"
+  node_config {
+    preemptible  = true
+    machine_type = "e2-small"
 
-#     labels = {
-#       team = "devops"
-#     }
 
-#     taint {
-#       key    = "instance_type"
-#       value  = "spot"
-#       effect = "NO_SCHEDULE"
-#     }
 
-#     service_account = google_service_account.kubernetes.email
-#     oauth_scopes = [
-#       "https://www.googleapis.com/auth/cloud-platform"
-#     ]
-#   }
-# }
+    service_account = google_service_account.kubernetes.email
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
+}
