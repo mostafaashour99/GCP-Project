@@ -30,7 +30,7 @@ kubectl apply -f redis-service.yaml
 kubectl apply -f redis-deploy.yaml
 ```
 
-### 5.now we need to get a sredis HOST_IP from redis service
+### 5.now we need to get a sredis HOST_IP from redis service 
 ```
 kubectl get service -o wide
 ```
@@ -40,7 +40,13 @@ kubectl get service -o wide
 ```
 vim values.yaml
 ```
-
+### or use this way to set REDIS_HOST
+```
+ env:
+     - name: REDIS_HOST
+       value: redis.default.svc.cluster.local
+       
+```
 ### 7.Deploy app to GKE cluster and expose deploymnet through load balancer
 ```
 helm install <appname> .
